@@ -1,4 +1,5 @@
 instance 1
+ssh -i your-key.pem ec2-user@your-ip
 echo "Secure Cloud File Sharing" > file.txt
 cat file.txt
 ssh-keygen -t rsa
