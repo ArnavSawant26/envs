@@ -1,0 +1,29 @@
+instance 1
+echo "Secure Cloud File Sharing" > file.txt
+cat file.txt
+ssh-keygen -t rsa
+
+you will get id_rsa, id_rsa.pub
+
+cat ~/.ssh/id_rsa.pub
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQ... copy whole string
+
+instance 2
+mkdir -p ~/.ssh
+nano ~/.ssh/authorized_keys
+Paste copied public key.
+chmod 700 ~/.ssh
+chmod 600 ~/.ssh/authorized_keys
+
+instance 1
+scp file.txt ec2-user@PRIVATE_IP_OF_INSTANCE2:/home/ec2-user/
+
+instance 2
+ls
+cat file.txt
+
+
+
+chmod 600 file.txt
+ls -l
+-rw------- file.txt
