@@ -1,0 +1,114 @@
+===product Inventory======
+
+=====apex=======
+public class ProductInventoryController {
+    
+    // Variables used by the Visualforce page
+    public Product_Inventory__c product { get; set; }
+    public List<Product_Inventory__c> productList { get; set; }
+    public Id selectedProductId { get; set; }
+
+    // Constructor runs when the page loads
+    public ProductInventoryController() {
+        product = new Product_Inventory__c();
+        loadProducts();
+    }
+
+    // Method to fetch all products from the database
+    public void loadProducts() {
+        productList = [SELECT Id, Name, Serial_number__c, Manufacture_date__c, Expiry_date__c 
+                       FROM Product_Inventory__c 
+                       ORDER BY CreatedDate DESC];
+    }
+
+    // Method to Save or Update a product
+    public void saveProduct() {
+        try {
+            upsert product; // 'Upsert' inserts if new, updates if existing ID
+            product = new Product_Inventory__c(); // Clear the form after saving
+            loadProducts(); // Refresh the table
+            ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.CONFIRM, 'Product saved successfully!'));
+        } catch(Exception e) {
+            ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.ERROR, 'Error saving: ' + e.getMessage()));
+        }
+    }
+
+    // Method to fetch existing product details into the form for editing
+    public void editProduct() {
+        if(selectedProductId != null) {
+            product = [SELECT Id, Name, Serial_number__c, Manufacture_date__c, Expiry_date__c 
+                       FROM Product_Inventory__c 
+                       WHERE Id = :selectedProductId LIMIT 1];
+        }
+    }
+
+    // Method to delete a product
+    public void deleteProduct() {
+        if(selectedProductId != null) {
+            try {
+                Product_Inventory__c toDelete = new Product_Inventory__c(Id = selectedProductId);
+                delete toDelete;
+                loadProducts(); // Refresh the table
+                ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.CONFIRM, 'Product deleted successfully.'));
+            } catch(Exception e) {
+                ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.ERROR, 'Error deleting: ' + e.getMessage()));
+            }
+        }
+    }
+    
+    // Method to clear the form if the user cancels an edit
+    public void clearForm() {
+        product = new Product_Inventory__c();
+    }
+}
+
+
+
+
+‘======vf===========
+<apex:page controller="ProductInventoryController">
+    <h2>Product Inventory Management</h2>
+
+    <apex:form id="mainForm">
+
+        <apex:pageMessages id="messages"/>
+
+        <apex:pageBlock title="Add / Edit Product" id="formPanel">
+            <apex:pageBlockSection >
+                <apex:inputField value="{!product.Name}"/>
+                <apex:inputField value="{!product.Serial_number__c}"/>
+                <apex:inputField value="{!product.Manufacture_date__c}"/>
+                <apex:inputField value="{!product.Expiry_date__c}"/>
+            </apex:pageBlockSection>
+
+            <apex:pageBlockButtons location="bottom">
+                <apex:commandButton value="Save Product" action="{!saveProduct}" rerender="mainForm"/>
+                <apex:commandButton value="Clear Form" action="{!clearForm}" rerender="formPanel" immediate="true"/>
+            </apex:pageBlockButtons>
+        </apex:pageBlock>
+
+        <apex:pageBlock title="Product List" id="listPanel">
+            <apex:pageBlockTable value="{!productList}" var="p">
+                
+                <apex:column headerValue="Actions">
+                    <apex:commandLink value="Edit" action="{!editProduct}" rerender="formPanel,messages">
+                        <apex:param name="editId" value="{!p.Id}" assignTo="{!selectedProductId}"/>
+                    </apex:commandLink>
+                    
+                    &nbsp;|&nbsp;
+                    
+                    <apex:commandLink value="Delete" action="{!deleteProduct}" rerender="listPanel,messages" onclick="if(!confirm('Are you sure you want to delete this product?')) return false;">
+                        <apex:param name="delId" value="{!p.Id}" assignTo="{!selectedProductId}"/>
+                    </apex:commandLink>
+                </apex:column>
+
+                <apex:column value="{!p.Name}" />
+                <apex:column value="{!p.Serial_number__c}" />
+                <apex:column value="{!p.Manufacture_date__c}" />
+                <apex:column value="{!p.Expiry_date__c}" />
+
+            </apex:pageBlockTable>
+        </apex:pageBlock>
+
+    </apex:form>
+</apex:page>

@@ -1,0 +1,73 @@
+For the bank===================
+public class BankAccountSystem {
+
+    // ADD CUSTOMER
+    public static void addCustomer(
+        Integer empId,
+        String empName,
+        String email,
+        Date birthDate,
+        String department
+    ) {
+
+        Employee__c emp = new Employee__c();
+
+        emp.EmpI__c = empId;
+        emp.Name = empName;
+        emp.Email__c = email;
+        emp.BirthDate__c = birthDate;
+        emp.Department__c = department;
+
+        insert emp;
+
+        System.debug('Customer Added Successfully');
+    }
+
+    // DISPLAY CUSTOMERS
+    public static void displayCustomers() {
+
+        List<Employee__c> empList = [
+            SELECT Id,
+                   Name,
+                   EmpI__c,
+                   Email__c,
+                   BirthDate__c,
+                   Department__c
+            FROM Employee__c
+        ];
+
+        for(Employee__c e : empList) {
+
+            System.debug(
+                'ID: ' + e.EmpI__c +
+                ' | Name: ' + e.Name +
+                ' | Email: ' + e.Email__c +
+                ' | BirthDate: ' + e.BirthDate__c +
+                ' | Department: ' + e.Department__c
+            );
+        }
+    }
+}
+
+
+
+====add===
+BankAccountSystem.addCustomer(
+    201,
+    'Rahul',
+    'rahul@gmail.com',
+    Date.newInstance(2003, 4, 15),
+    'Finance'
+);
+
+=====display====
+BankAccountSystem.displayCustomers();
+
+==update delete===
+BankAccountSystem.updateCustomer(
+    201,
+    'HR'
+);
+===delete===
+BankAccountSystem.deleteCustomer(201);
+

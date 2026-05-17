@@ -1,0 +1,37 @@
+Ecommerce
+NODE_ENV=development
+PORT=5000
+MONGO_URI=mongodb+srv://pushkarpawar3477_db_user:wuGCvVTpZlbf0heP@cluster0.2kspi7u.mongodb.net/
+JWT_SECRET=somesecretkey123
+
+Task management
+MONGODB_URI=mongodb+srv://pushkarpawar3477_db_user:vukKLwVZV85nHKCJ@cluster0.h1vxiv9.mongodb.net/
+PORT=5000
+JWT_SECRET=supersecretkey123
+NODE_ENV=production
+
+Blogging application
+MONGODB_URI=mongodb+srv://pushkarpawar3477_db_user:0fUYschEcgvhohta@cluster0.qacuv0k.mongodb.net/blogapp
+JWT_SECRET=Pushkar@123
+NODE_ENV=production
+PORT=5000
+
+Event registration
+PORT=5000
+MONGO_URI=mongodb+srv://pushkarpawar3477_db_user:ajcdHgVbQ0cErRLk@cluster0.8eqrsnm.mongodb.net/
+JWT_SECRET=yoursecretkey
+NODE_ENV=development
+
+Student record
+PORT=5000
+MONGODB_URI=mongodb+srv://pushkarpawar3477_db_user:UqwbGI4Wb0Ufud7y@cluster0.24cx9hm.mongodb.net/studentrecord
+JWT_SECRET=your_super_secret_key_123
+NODE_ENV=production
+
+
+https://github.com/pushkarpawar01/event-registration-system
+https://github.com/pushkarpawar01/student-record-management
+https://github.com/pushkarpawar01/blogging-application
+https://github.com/pushkarpawar01/ecomerce
+https://github.com/pushkarpawar01/lp2
+https://github.com/rocky17p/Lp2

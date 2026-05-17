@@ -1,0 +1,164 @@
+Setup → Object Manager → Create → Custom Object
+Fill:
+•	Label: Student 
+•	Plural Label: Students 
+•	Object Name: auto-filled 
+Click ✔️ Save
+________________________________________
+➕ Add Fields for Student
+Go to Fields & Relationships → New
+Create:
+Field	Type
+Student Name	Text
+Roll Number	Number
+Marks	Number
+Department	Picklist
+
+============validation tab in obj itself==========
+1️⃣ Roll Number > 0
+Roll_Number__c <= 0
+Error: Roll number must be greater than 0
+________________________________________
+2️⃣ Marks between 0 and 100
+Marks__c < 0 || Marks__c > 100
+Error: Marks should be between 0 and 100
+________________________________________
+3️⃣ Student Name not blank
+ISBLANK(Name)
+Error: Student name cannot be blank
+________________________________________
+4️⃣ Department must be selected
+ISBLANK(Department__c)
+Error: Department must be selected
+
+
+============faculty==========
+Object Manager → Create → Custom Object
+•	Label: Faculty 
+________________________________________
+➕ Fields for Faculty
+Field	Type
+Faculty Name	Text
+Faculty ID	Number
+Email	Email
+Salary	Number
+Department	Picklist
+Joining Date	Date
+________________________________________
+🚨 STEP 5: Validation Rules for Faculty
+________________________________________
+1️⃣ Faculty Name (min 3 characters)
+LEN(Faculty_Name__c) < 3
+________________________________________
+2️⃣ Faculty ID > 0 (and unique via field property)
+Faculty_ID__c <= 0
+👉 ALSO CHECK:
+•	Mark Faculty ID as External ID + Unique 
+________________________________________
+3️⃣ Email must contain @
+NOT(CONTAINS(Email__c, "@"))
+________________________________________
+4️⃣ Salary range
+Salary__c < 10000 || Salary__c > 500000
+________________________________________
+5️⃣ Joining Date not future
+Joining_Date__c > TODAY()
+
+
+Go to:
+Setup → Tabs → New
+Create:
+•	Student Tab 
+•	Faculty Tab
+
+
+Go to:
+Setup → App Manager → New Lightning App
+Fill:
+•	App Name: College Management 
+•	Navigation Style: Standard 
+Add Items:
+•	Students 
+•	Faculty
+Setup → Object Manager → Create → Custom Object
+Fill:
+•	Label: Student 
+•	Plural Label: Students 
+•	Object Name: auto-filled 
+Click ✔️ Save
+________________________________________
+➕ Add Fields for Student
+Go to Fields & Relationships → New
+Create:
+Field	Type
+Student Name	Text
+Roll Number	Number
+Marks	Number
+Department	Picklist
+
+============validation tab in obj itself==========
+1️⃣ Roll Number > 0
+Roll_Number__c <= 0
+Error: Roll number must be greater than 0
+________________________________________
+2️⃣ Marks between 0 and 100
+Marks__c < 0 || Marks__c > 100
+Error: Marks should be between 0 and 100
+________________________________________
+3️⃣ Student Name not blank
+ISBLANK(Name)
+Error: Student name cannot be blank
+________________________________________
+4️⃣ Department must be selected
+ISBLANK(Department__c)
+Error: Department must be selected
+
+
+============faculty==========
+Object Manager → Create → Custom Object
+•	Label: Faculty 
+________________________________________
+➕ Fields for Faculty
+Field	Type
+Faculty Name	Text
+Faculty ID	Number
+Email	Email
+Salary	Number
+Department	Picklist
+Joining Date	Date
+________________________________________
+🚨 STEP 5: Validation Rules for Faculty
+________________________________________
+1️⃣ Faculty Name (min 3 characters)
+LEN(Faculty_Name__c) < 3
+________________________________________
+2️⃣ Faculty ID > 0 (and unique via field property)
+Faculty_ID__c <= 0
+👉 ALSO CHECK:
+•	Mark Faculty ID as External ID + Unique 
+________________________________________
+3️⃣ Email must contain @
+NOT(CONTAINS(Email__c, "@"))
+________________________________________
+4️⃣ Salary range
+Salary__c < 10000 || Salary__c > 500000
+________________________________________
+5️⃣ Joining Date not future
+Joining_Date__c > TODAY()
+
+
+Go to:
+Setup → Tabs → New
+Create:
+•	Student Tab 
+•	Faculty Tab
+
+
+Go to:
+Setup → App Manager → New Lightning App
+Fill:
+•	App Name: College Management 
+•	Navigation Style: Standard 
+Add Items:
+•	Students 
+•	Faculty

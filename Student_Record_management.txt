@@ -1,0 +1,233 @@
+Login->setup>serach object manager->click on createt and custom object
+Field	Value
+Label	Student
+Plural Label	Students
+Object Name	Student
+Record Name	Student Name
+Inside stu obj
+
+Create These Fields
+Field Label	Type
+RollNo	Number
+class	Text
+MobNo	Phone
+
+Setup → Apex Classes → New give name StudentController
+public class StudentController {
+
+    public Student__c stu {get; set;}
+
+    public List<Student__c> studentList {get; set;}
+
+    // CONSTRUCTOR
+    public StudentController() {
+
+        stu = new Student__c();
+
+        loadStudents();
+    }
+
+    // LOAD STUDENT LIST
+    public void loadStudents() {
+
+        studentList = [
+            SELECT Id,
+                   Name,
+                   RollNo__c,
+                   class__c,
+                   MobNo__c
+            FROM Student__c
+            ORDER BY CreatedDate DESC
+        ];
+    }
+
+    // SAVE STUDENT
+    public PageReference saveStudent() {
+
+        insert stu;
+
+        ApexPages.addMessage(
+            new ApexPages.Message(
+                ApexPages.Severity.CONFIRM,
+                'Student Saved Successfully'
+            )
+        );
+
+        stu = new Student__c();
+
+        loadStudents();
+
+        return null;
+    }
+
+    // EDIT STUDENT
+    public PageReference editStudent() {
+
+        String studentId =
+            ApexPages.currentPage()
+            .getParameters()
+            .get('sid');
+
+        stu = [
+            SELECT Id,
+                   Name,
+                   RollNo__c,
+                   class__c,
+                   MobNo__c
+            FROM Student__c
+            WHERE Id = :studentId
+        ];
+
+        return null;
+    }
+
+    // UPDATE STUDENT
+    public PageReference updateStudent() {
+
+        update stu;
+
+        ApexPages.addMessage(
+            new ApexPages.Message(
+                ApexPages.Severity.CONFIRM,
+                'Student Updated Successfully'
+            )
+        );
+
+        stu = new Student__c();
+
+        loadStudents();
+
+        return null;
+    }
+
+    // DELETE STUDENT
+    public PageReference deleteStudent() {
+
+        String studentId =
+            ApexPages.currentPage()
+            .getParameters()
+            .get('sid');
+
+        Student__c s = [
+            SELECT Id
+            FROM Student__c
+            WHERE Id = :studentId
+        ];
+
+        delete s;
+
+        loadStudents();
+
+        ApexPages.addMessage(
+            new ApexPages.Message(
+                ApexPages.Severity.CONFIRM,
+                'Student Deleted Successfully'
+            )
+        );
+
+        return null;
+    }
+}
+
+Search for visualforce pg and nm it StudentPage and paste this code and click on preview
+<apex:page controller="StudentController">
+
+    <apex:form>
+
+        <apex:pageBlock title="Student Record Management System">
+
+            <apex:pageMessages />
+
+            <!-- STUDENT FORM -->
+
+            <apex:pageBlockSection columns="1">
+
+                <apex:inputField value="{!stu.Name}" />
+
+                <apex:inputField value="{!stu.RollNo__c}" />
+
+                <apex:inputField value="{!stu.class__c}" />
+
+                <apex:inputField value="{!stu.MobNo__c}" />
+
+            </apex:pageBlockSection>
+
+            <br/>
+
+            <!-- SAVE BUTTON -->
+
+            <apex:commandButton
+                value="Save Student"
+                action="{!saveStudent}"
+                rendered="{!ISNULL(stu.Id)}"/>
+
+            <!-- UPDATE BUTTON -->
+
+            <apex:commandButton
+                value="Update Student"
+                action="{!updateStudent}"
+                rendered="{!NOT(ISNULL(stu.Id))}"/>
+
+            <br/><br/>
+
+            <!-- STUDENT TABLE -->
+
+            <apex:pageBlockTable
+                value="{!studentList}"
+                var="s">
+
+                <apex:column
+                    value="{!s.Name}"
+                    headerValue="Name"/>
+
+                <apex:column
+                    value="{!s.RollNo__c}"
+                    headerValue="Roll No"/>
+
+                <apex:column
+                    value="{!s.class__c}"
+                    headerValue="Class"/>
+
+                <apex:column
+                    value="{!s.MobNo__c}"
+                    headerValue="Mobile No"/>
+
+                <!-- EDIT -->
+
+                <apex:column headerValue="Edit">
+
+                    <apex:commandLink
+                        value="Edit"
+                        action="{!editStudent}">
+
+                        <apex:param
+                            name="sid"
+                            value="{!s.Id}" />
+
+                    </apex:commandLink>
+
+                </apex:column>
+
+                <!-- DELETE -->
+
+                <apex:column headerValue="Delete">
+
+                    <apex:commandLink
+                        value="Delete"
+                        action="{!deleteStudent}">
+
+                        <apex:param
+                            name="sid"
+                            value="{!s.Id}" />
+
+                    </apex:commandLink>
+
+                </apex:column>
+
+            </apex:pageBlockTable>
+
+        </apex:pageBlock>
+
+    </apex:form>
+
+</apex:page>

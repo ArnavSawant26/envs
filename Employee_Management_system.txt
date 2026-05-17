@@ -1,0 +1,107 @@
+Create obj manager ==Employee
+
+
+public class EmployeeManagementSystem {
+
+    // ADD EMPLOYEE
+    public static void addEmployee(
+        Integer empId,
+        String empName,
+        String email,
+        Date birthDate,
+        String department
+    ) {
+
+        Employee__c emp = new Employee__c();
+
+        emp.EmpI__c = empId;
+        emp.Name = empName;
+        emp.Email__c = email;
+        emp.BirthDate__c = birthDate;
+        emp.Department__c = department;
+
+        insert emp;
+
+        System.debug('Employee Added Successfully');
+    }
+
+    // DISPLAY EMPLOYEES
+    public static void displayEmployees() {
+
+        List<Employee__c> empList = [
+            SELECT Id,
+                   Name,
+                   EmpI__c,
+                   Email__c,
+                   BirthDate__c,
+                   Department__c
+            FROM Employee__c
+        ];
+
+        for(Employee__c e : empList) {
+
+            System.debug(
+                'ID: ' + e.EmpI__c +
+                ' | Name: ' + e.Name +
+                ' | Email: ' + e.Email__c +
+                ' | BirthDate: ' + e.BirthDate__c +
+                ' | Department: ' + e.Department__c
+            );
+        }
+    }
+
+    // UPDATE EMPLOYEE
+    public static void updateEmployee(
+        Integer empId,
+        String newDepartment
+    ) {
+
+        Employee__c emp = [
+            SELECT Id, Department__c
+            FROM Employee__c
+            WHERE EmpI__c = :empId
+            LIMIT 1
+        ];
+
+        emp.Department__c = newDepartment;
+
+        update emp;
+
+        System.debug('Employee Updated Successfully');
+    }
+
+    // DELETE EMPLOYEE
+    public static void deleteEmployee(Integer empId) {
+
+        Employee__c emp = [
+            SELECT Id
+            FROM Employee__c
+            WHERE EmpI__c = :empId
+            LIMIT 1
+        ];
+
+        delete emp;
+
+        System.debug('Employee Deleted Successfully');
+    }
+}
+
+
+
+====Open developer console==open execute anynomus window
+EmployeeManagementSystem.addEmployee(
+    101,
+    'Manorama',
+    'mano@gmail.com',
+    Date.newInstance(2004, 5, 10),
+    'IT'
+);
+=====display====
+EmployeeManagementSystem.displayEmployees();
+======update====
+EmployeeManagementSystem.updateEmployee(
+    101,
+    'HR'
+);
+===delete====and then again dispaly
+EmployeeManagementSystem.deleteEmployee(101);
