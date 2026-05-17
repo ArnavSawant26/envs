@@ -4,6 +4,7 @@ sudo systemctl start nginx
 sudo systemctl enable nginx
 sudo systemctl status nginx
 cd /usr/share/nginx/html
+sudo rm index.html
 sudo nano index.html
 
 sudo systemctl restart nginx
